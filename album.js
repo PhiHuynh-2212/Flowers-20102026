@@ -8,6 +8,8 @@
   const status = document.getElementById('albumStatus');
   const cards = [...album.querySelectorAll('.album-card')];
   const photosContainer = document.getElementById('albumPhotos');
+  let editing = false;
+  const MAX_FILE_SIZE = 20 * 1024 * 1024;
 
   function toggleSpread() {
     const expanded = album.classList.toggle('is-spread');
