@@ -42,17 +42,22 @@
     return albumRevealPromise;
   }
 
-  albumToggle.addEventListener('click', () => {
-    const expanded = album.classList.toggle('is-spread');
-    albumToggle.setAttribute('aria-expanded', String(expanded));
-    albumToggle.innerHTML = expanded ? 'Gấp album <span aria-hidden="true">♡</span>' : 'Xòe album <span aria-hidden="true">♡</span>';
-  });
-  document.getElementById('viewAlbum').addEventListener('click', async () => {
-    await revealAlbum();
-    album.classList.add('is-revealed');
-    album.scrollIntoView({ behavior: motion.matches ? 'instant' : 'smooth', block: 'start' });
-    albumToggle.focus({ preventScroll: true });
-  });
+  if (albumToggle) {
+    albumToggle.addEventListener('click', () => {
+      const expanded = album.classList.toggle('is-spread');
+      albumToggle.setAttribute('aria-expanded', String(expanded));
+      albumToggle.innerHTML = expanded ? 'Gấp album <span aria-hidden="true">♡</span>' : 'Xòe album <span aria-hidden="true">♡</span>';
+    });
+  }
+  const viewAlbumBtn = document.getElementById('viewAlbum');
+  if (viewAlbumBtn) {
+    viewAlbumBtn.addEventListener('click', async () => {
+      await revealAlbum();
+      album.classList.add('is-revealed');
+      album.scrollIntoView({ behavior: motion.matches ? 'instant' : 'smooth', block: 'start' });
+      if (albumToggle) albumToggle.focus({ preventScroll: true });
+    });
+  }
 
   function reflowScene(changeLayout) {
     layoutAnimations.forEach(animation => animation.cancel());
@@ -140,8 +145,35 @@
     // The default letter stays usable when storage is unavailable or malformed.
   }
 
+  // Check if viewing a shared link (?id=...)
+  const isSharedView = Boolean(window.FlowerShare && window.FlowerShare.activeId);
+
+  if (isSharedView) {
+    document.body.classList.add('is-shared-view');
+    // Hide buttons for creating/editing when viewed via shared link
+    const viewAlbumBtn = document.getElementById('viewAlbum');
+    const editBtn = document.getElementById('editCard');
+    const shareBtn = document.getElementById('shareLinkBtn');
+    const toggleAlb = document.getElementById('toggleAlbum');
+    const editAlb = document.getElementById('editAlbum');
+    const replayBtn = document.getElementById('replayBloom');
+    const bouquetHintEl = document.getElementById('bouquetHint');
+    const roseWishEl = document.getElementById('roseWish');
+    const albHint = document.getElementById('albumEditHint');
+
+    if (viewAlbumBtn) viewAlbumBtn.hidden = true;
+    if (editBtn) editBtn.hidden = true;
+    if (shareBtn) shareBtn.hidden = true;
+    if (toggleAlb) toggleAlb.hidden = true;
+    if (editAlb) editAlb.hidden = true;
+    if (replayBtn) replayBtn.hidden = true;
+    if (bouquetHintEl) bouquetHintEl.hidden = true;
+    if (roseWishEl) roseWishEl.hidden = true;
+    if (albHint) albHint.hidden = true;
+  }
+
   // Load from Supabase if ?id=xxx is present in URL
-  if (window.FlowerShare && window.FlowerShare.activeId) {
+  if (isSharedView) {
     window.FlowerShare.getCard(window.FlowerShare.activeId).then(data => {
       if (data) {
         if (data.recipient) greeting.recipient = data.recipient;
@@ -173,17 +205,23 @@
 
   document.addEventListener('bouquet:ready', () => { openButton.hidden = false; });
   document.addEventListener('bouquet:rose', event => {
+    if (isSharedView) return; // Suppress rose wish announcements in shared view
     const wish = document.getElementById('roseWish');
+    if (!wish) return;
     wish.classList.remove('is-new');
     wish.textContent = event.detail.message;
     // Restart the brief reveal even when two flowers share the same wish.
     void wish.offsetWidth;
     wish.classList.add('is-new');
   });
-  document.getElementById('replayBloom').addEventListener('click', () => {
-    document.dispatchEvent(new Event('bouquet:replay'));
-    document.getElementById('roseWish').textContent = '';
-  });
+  const replayBtnEl = document.getElementById('replayBloom');
+  if (replayBtnEl) {
+    replayBtnEl.addEventListener('click', () => {
+      document.dispatchEvent(new Event('bouquet:replay'));
+      const wish = document.getElementById('roseWish');
+      if (wish) wish.textContent = '';
+    });
+  }
 
   openButton.addEventListener('click', () => setCardOpen(!dialog.open));
   closeButton.addEventListener('click', () => setCardOpen(false));
@@ -288,6 +326,26 @@
         status.textContent = 'Đã tạo link chia sẻ thành công!';
         shareUrlInput.focus();
         shareUrlInput.select();
+
+        // Once a share link is created, hide editing and management buttons as requested
+        const viewAlb = document.getElementById('viewAlbum');
+        const editCd = document.getElementById('editCard');
+        const toggleAlb = document.getElementById('toggleAlbum');
+        const editAlb = document.getElementById('editAlbum');
+        const replayBtn = document.getElementById('replayBloom');
+        const bouquetHintEl = document.getElementById('bouquetHint');
+        const roseWishEl = document.getElementById('roseWish');
+        const albHint = document.getElementById('albumEditHint');
+
+        if (viewAlb) viewAlb.hidden = true;
+        if (editCd) editCd.hidden = true;
+        if (shareLinkBtn) shareLinkBtn.hidden = true;
+        if (toggleAlb) toggleAlb.hidden = true;
+        if (editAlb) editAlb.hidden = true;
+        if (replayBtn) replayBtn.hidden = true;
+        if (bouquetHintEl) bouquetHintEl.hidden = true;
+        if (roseWishEl) roseWishEl.hidden = true;
+        if (albHint) albHint.hidden = true;
       } catch (err) {
         console.error(err);
         status.textContent = 'Có lỗi khi tạo link chia sẻ. Bạn vui lòng thử lại nhé.';

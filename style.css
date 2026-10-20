@@ -195,7 +195,10 @@ h1 { margin: 0; font-size: clamp(28px, 3.4vw, 42px); line-height: 1.08; letter-s
 .album-heading { margin-bottom: 26px; }
 .album-note { color: var(--muted); font-size: 12px; line-height: 1.7; margin: 0 0 12px; }
 #albumTitle { font-size: clamp(26px, 3vw, 34px); line-height: 1.25; margin: 0 0 8px; letter-spacing: -.5px; }
-.album-photos { display: grid; grid-template-columns: minmax(0, 1fr); gap: 28px; padding: 18px 18px 14px; }
+.album-photos {
+  display: grid; grid-template-columns: minmax(0, 1fr); gap: 28px;
+  padding: 18px 18px 14px; cursor: pointer; user-select: none;
+}
 .album-card { grid-area: 1 / 1; width: min(100%, 230px); max-width: none; transform-origin: center; }
 .album-card:nth-child(1) { z-index: 3; transform: rotate(-3deg); }
 .album-card:nth-child(2) { z-index: 2; transform: translate(12px, -6px) rotate(7deg); }

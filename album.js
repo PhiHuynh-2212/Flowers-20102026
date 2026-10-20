@@ -7,21 +7,43 @@
   const hint = document.getElementById('albumEditHint');
   const status = document.getElementById('albumStatus');
   const cards = [...album.querySelectorAll('.album-card')];
-  const MAX_FILE_SIZE = 20 * 1024 * 1024;
-  let editing = false;
+  const photosContainer = document.getElementById('albumPhotos');
+
+  function toggleSpread() {
+    const expanded = album.classList.toggle('is-spread');
+    if (toggle) {
+      toggle.setAttribute('aria-expanded', String(expanded));
+      toggle.innerHTML = expanded ? 'Gấp album <span aria-hidden="true">♡</span>' : 'Xòe album <span aria-hidden="true">♡</span>';
+    }
+  }
+
+  // Click directly on album photos to spread / fold
+  if (photosContainer) {
+    photosContainer.addEventListener('click', (e) => {
+      // Don't toggle if user clicked on a button or input inside
+      if (e.target.closest('button') || e.target.closest('input')) return;
+      toggleSpread();
+    });
+  }
+
+  if (toggle) {
+    toggle.addEventListener('click', () => {
+      toggleSpread();
+      if (editing && !album.classList.contains('is-spread')) setEditing(false);
+    });
+  }
 
   function setEditing(open) {
     editing = open;
-    if (open && !album.classList.contains('is-spread')) toggle.click();
+    if (open && !album.classList.contains('is-spread')) toggleSpread();
     cards.forEach(card => { card.querySelector('.photo-actions').hidden = !open; });
-    hint.hidden = !open;
-    edit.setAttribute('aria-expanded', String(open));
-    edit.textContent = open ? 'Xong' : 'Thay ảnh ✎';
+    if (hint) hint.hidden = !open;
+    if (edit) {
+      edit.setAttribute('aria-expanded', String(open));
+      edit.textContent = open ? 'Xong' : 'Thay ảnh ✎';
+    }
   }
-  edit.addEventListener('click', () => setEditing(!editing));
-  toggle.addEventListener('click', () => {
-    if (editing && !album.classList.contains('is-spread')) setEditing(false);
-  });
+  if (edit) edit.addEventListener('click', () => setEditing(!editing));
 
   async function preparePhoto(file) {
     const url = URL.createObjectURL(file);
