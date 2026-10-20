@@ -1,0 +1,258 @@
+@font-face {
+  font-family: "Noto Serif";
+  src: url("./assets/fonts/noto-serif-regular.woff2") format("woff2");
+  font-style: normal; font-weight: 400; font-display: swap;
+}
+@font-face {
+  font-family: "Noto Serif";
+  src: url("./assets/fonts/noto-serif-italic.woff2") format("woff2");
+  font-style: italic; font-weight: 400; font-display: swap;
+}
+@font-face {
+  font-family: "Noto Sans";
+  src: url("./assets/fonts/noto-sans-regular.woff2") format("woff2");
+  font-style: normal; font-weight: 400; font-display: swap;
+}
+:root {
+  --paper: #fffdfb;
+  --blush: #fff8fa;
+  --rose: #c7637d;
+  --ink: #76364d;
+  --muted: #916674;
+  --line: #ecd3db;
+  --bouquet-size: clamp(210px, calc(100dvh - 300px), 560px);
+  --font-serif: "Noto Serif", "Palatino Linotype", "Book Antiqua", Georgia, serif;
+  --font-sans: "Noto Sans", "Segoe UI", Arial, sans-serif;
+  color: var(--ink);
+  font-family: var(--font-sans);
+  font-synthesis: none;
+}
+* { box-sizing: border-box; }
+[hidden] { display: none !important; }
+html, body { margin: 0; min-width: 320px; min-height: 100%; }
+body {
+  background: radial-gradient(ellipse at 50% 46%, #fffdfd 0%, #fff9fa 47%, #fcecf1 100%);
+  -webkit-tap-highlight-color: transparent;
+}
+button, input, textarea { font: inherit; }
+button { color: inherit; cursor: pointer; touch-action: manipulation; }
+button:focus-visible, a:focus-visible, [tabindex]:focus-visible, input:focus-visible, textarea:focus-visible {
+  outline: 2px solid var(--ink); outline-offset: 5px;
+}
+main {
+  min-height: 100vh; min-height: 100dvh;
+  display: grid; align-content: center;
+  position: relative; isolation: isolate;
+  padding: max(72px, calc(env(safe-area-inset-top) + 64px)) clamp(16px, 3vw, 48px) max(16px, env(safe-area-inset-bottom));
+}
+.garden-link {
+  position: absolute; top: max(14px, env(safe-area-inset-top));
+  right: max(16px, env(safe-area-inset-right)); z-index: 4;
+  display: inline-flex; align-items: center; gap: 8px;
+  min-height: 44px; padding: 10px 16px; border: 1px solid var(--line); border-radius: 24px;
+  background: var(--paper); color: var(--ink); font-size: 13px; text-decoration: none;
+}
+.garden-link:hover { background: #fae7ef; }
+.garden-link span { color: var(--rose); font-size: 20px; line-height: 1; }
+.gift-layout {
+  width: min(100%, 1040px); margin-inline: auto;
+  display: grid; grid-template-columns: minmax(0, 1fr); align-items: start;
+  gap: 32px clamp(28px, 4vw, 60px);
+}
+.scene-column { min-width: 0; display: flex; flex-direction: column; align-items: center; }
+.gift-visuals {
+  width: 100%; margin: 4px auto 0; display: grid; place-items: center;
+}
+.portrait-card {
+  position: relative; min-width: 0; width: 100%; max-width: 275px;
+  justify-self: center; margin: 0; padding: 10px 10px 0;
+  background: var(--paper); border: 1px solid #ecd3db99;
+  box-shadow: 0 14px 40px #76364d10, 0 2px 7px #76364d08;
+  transform-origin: top left;
+}
+.portrait-photo { overflow: hidden; aspect-ratio: 3 / 4; background: #f3e4e5; }
+.portrait-photo img { display: block; width: 100%; height: 100%; object-fit: cover; object-position: center; }
+.portrait-card figcaption { padding: 19px 6px 20px; text-align: center; }
+.portrait-dedication { display: block; font: italic clamp(16px, 1.6vw, 21px)/1.45 var(--font-serif); text-wrap: pretty; }
+.portrait-date { display: block; color: var(--muted); margin-top: 11px; font-size: 10px; line-height: 1.6; }
+main::before {
+  content: ''; position: absolute; left: 50%; top: 52%; z-index: -1;
+  width: min(90vw, 700px); aspect-ratio: 1;
+  transform: translate(-50%, -50%); border-radius: 50%;
+  background: radial-gradient(circle, rgba(252, 210, 223, .45), rgba(254, 235, 242, .16) 57%, transparent 73%);
+  filter: blur(26px); pointer-events: none;
+}
+.greeting { width: fit-content; max-width: 100%; margin: 0 auto 8px; transform-origin: top left; position: relative; z-index: 1; text-align: center; }
+.occasion { margin: 0 0 10px; font-size: 13px; color: var(--muted); }
+.occasion span { margin-left: 10px; color: var(--ink); font-weight: 600; }
+h1, h2, .letter-recipient { font-family: var(--font-serif); font-weight: 400; }
+h1 { margin: 0; font-size: clamp(28px, 3.4vw, 42px); line-height: 1.08; letter-spacing: -1.3px; }
+.greeting-caption { font-size: 14px; color: var(--muted); margin: 10px 0 0; }
+.bouquet-composition {
+  position: relative; min-width: 0; margin: -12px auto -8px;
+  width: min(100%, var(--bouquet-size));
+  transform-origin: top left;
+}
+#bouquetStageWrapper {
+  position: relative; width: 100%; aspect-ratio: 1; border-radius: 45%;
+  cursor: pointer; touch-action: manipulation;
+  animation: bouquet-entrance 1.15s cubic-bezier(.16, 1, .3, 1) both;
+}
+#bouquetCanvas { width: 100%; height: 100%; display: block; }
+.envelope-button {
+  position: absolute; right: 8px; top: 66%; width: clamp(126px, 29%, 164px);
+  padding: 0; border: 0; background: transparent; text-align: center;
+  transform: rotate(-7deg); animation: envelope-arrival .8s cubic-bezier(.2,.8,.2,1) both;
+}
+.envelope {
+  position: relative; display: block; width: 106px; height: 72px; margin: 0 auto 12px;
+  background: #f5d9e2; border: 1px solid #e3b5c4; border-radius: 2px 2px 5px 5px;
+  box-shadow: 0 8px 18px #76364d18;
+}
+.envelope::before {
+  content: ''; position: absolute; inset: 0; z-index: 2;
+  background: linear-gradient(32deg, #f9e6ec 49%, transparent 50%) left / 51% 100% no-repeat,
+              linear-gradient(-32deg, #f5dfe7 49%, transparent 50%) right / 51% 100% no-repeat;
+  border-radius: inherit;
+}
+.envelope::after {
+  content: ''; position: absolute; inset: -1px -1px 0; z-index: 3;
+  background: #fcebf0; clip-path: polygon(0 0, 100% 0, 50% 61%);
+  transform-origin: top; transition: transform .4s ease;
+}
+.envelope-letter {
+  position: absolute; inset: -11px 9px 9px; padding: 12px 0 0;
+  background: var(--paper); border: 1px solid var(--line);
+  font-family: var(--font-serif); font-style: italic; font-size: 13px;
+  transition: transform .4s ease;
+}
+.envelope-seal {
+  position: absolute; left: calc(50% - 12px); top: 28px; z-index: 4;
+  width: 24px; height: 24px; border-radius: 50%; background: #b85575;
+  color: #fff6f8; font: 19px/24px Georgia, serif; box-shadow: 0 2px 3px #76364d22;
+}
+.envelope-caption, .envelope-action { display: block; font-size: 11px; line-height: 1.5; }
+.envelope-caption { color: var(--muted); }
+.envelope-action { font-size: 13px; text-decoration: underline; text-underline-offset: 4px; margin-top: 3px; }
+@media (hover: hover) {
+  .envelope-button:hover .envelope-letter { transform: translateY(-7px); }
+  .envelope-button:hover .envelope::after { transform: rotateX(35deg); }
+}
+.scene-footer { transform-origin: top left; width: min(100%, 540px); margin-top: 6px; text-align: center; position: relative; z-index: 1; }
+.bouquet-hint { font-size: 12px; color: var(--muted); margin: 0; }
+.rose-wish { font: italic 17px/1.6 var(--font-serif); margin: 6px auto 2px; max-width: 440px; min-height: 54px; text-wrap: pretty; }
+.rose-wish:empty { min-height: 0; margin: 0; }
+.rose-wish.is-new { animation: wish-arrival .4s ease both; }
+.text-button { border: 0; background: transparent; padding: 12px 8px; font-size: 12px; text-decoration: underline; text-underline-offset: 4px; }
+.text-button span { display: inline-block; margin-left: 4px; text-decoration: none; }
+#replayBloom { margin-top: 3px; }
+#ambientPetalsCanvas { position: fixed; inset: 0; width: 100%; height: 100%; display: block; pointer-events: none; z-index: 2; }
+.card-dialog {
+  position: relative; z-index: 3; inset: auto; justify-self: center; align-self: start;
+  width: min(100%, 620px); min-width: 0; max-width: none; max-height: none; margin: 0;
+  padding: 0; border: 0; border-radius: 5px; color: var(--ink);
+  background: var(--paper); box-shadow: 0 20px 70px #76364d14, 0 2px 8px #76364d0d;
+  overflow: visible; scroll-margin-block: 24px;
+}
+.card-dialog[open] { animation: letter-open .45s .4s cubic-bezier(.16,1,.3,1) both; }
+.letter-paper { position: relative; padding: 18px 30px 10px; background: linear-gradient(90deg, transparent 49.7%, #eedde33b 50%, transparent 50.3%), var(--paper); }
+.letter-paper::before { content: ''; position: absolute; inset: 10px; border: 1px solid #ecd3db99; border-radius: 2px; pointer-events: none; }
+.close-button { position: absolute; right: 15px; top: 14px; z-index: 1; width: 36px; height: 36px; background: transparent; border: 0; border-radius: 50%; font-size: 25px; font-weight: 300; }
+.close-button:hover { background: #f9eaf0; }
+.letter-date { display: flex; align-items: center; justify-content: center; gap: 13px; font: 28px/1.1 var(--font-serif); color: var(--rose); margin: 0 0 10px; }
+.date-stem { width: 1px; height: 32px; background: var(--line); transform: rotate(25deg); }
+.letter-recipient { margin: 0 0 10px; font-size: 19px; overflow-wrap: anywhere; }
+#cardTitle { margin: 0; font-size: 31px; line-height: 1.2; letter-spacing: -.6px; }
+.letter-flower { text-align: center; font: 29px/1 var(--font-serif); color: var(--rose); margin: 6px 0 8px; }
+.letter-message { white-space: pre-wrap; overflow-wrap: anywhere; font-size: 14px; line-height: 1.65; margin: 0; }
+.message-paragraph { display: block; }
+.message-paragraph + .message-paragraph { margin-top: 12px; }
+.letter-signoff { margin-top: 10px; text-align: right; }
+.letter-signoff > p:first-child { margin: 0 0 3px; font-size: 12px; color: var(--muted); }
+.letter-signature { font: italic 23px/1.4 var(--font-serif); margin: 0; overflow-wrap: anywhere; }
+.letter-fold { height: 1px; margin: 8px -30px 2px; background: #ecd3db77; box-shadow: 0 1px 2px #76364d08; }
+.letter-actions { text-align: center; }
+.letter-actions .text-button { padding-block: 8px; }
+.card-status { font-size: 12px; color: var(--muted); text-align: center; margin: 0; line-height: 1.6; }
+.card-status:not(:empty) { padding: 8px 0; }
+.editor-intro { margin: 10px 0; font-size: 12px; color: var(--muted); }
+.editor-title { font-size: 27px; line-height: 1.2; margin: 0 0 26px; }
+#cardEditor label { display: block; font-size: 13px; margin: 18px 0 8px; }
+#cardEditor input, #cardEditor textarea { width: 100%; border: 1px solid #dcb8c5; border-radius: 5px; background: #fff9fb; color: var(--ink); padding: 11px 12px; font-size: 14px; line-height: 1.6; }
+#cardEditor textarea { resize: vertical; min-height: 150px; }
+.editor-hint { font-size: 11px; color: var(--muted); line-height: 1.7; margin-top: 14px; }
+.editor-actions { display: flex; align-items: center; gap: 16px; margin: 20px 0 10px; }
+.primary-button { border: 1px solid var(--ink); border-radius: 5px; padding: 12px 20px; font-size: 13px; background: var(--ink); color: var(--paper); }
+.noscript-message { text-align: center; font-size: 14px; }
+/* The album is a second chapter, revealed only after the letter is opened. */
+.memory-album {
+  position: relative; z-index: 3; width: min(100%, 850px); min-width: 0;
+  margin: clamp(32px, 4vw, 54px) auto 8px; text-align: center; scroll-margin-top: 32px;
+  opacity: 0; transform: translateY(24px);
+  transition: opacity .8s ease, transform .8s cubic-bezier(.2,.8,.2,1);
+}
+.memory-album.is-revealed { opacity: 1; transform: none; }
+.album-heading { margin-bottom: 26px; }
+.album-note { color: var(--muted); font-size: 12px; line-height: 1.7; margin: 0 0 12px; }
+#albumTitle { font-size: clamp(26px, 3vw, 34px); line-height: 1.25; margin: 0 0 8px; letter-spacing: -.5px; }
+.album-photos { display: grid; grid-template-columns: minmax(0, 1fr); gap: 28px; padding: 18px 18px 14px; }
+.album-card { grid-area: 1 / 1; width: min(100%, 230px); max-width: none; transform-origin: center; }
+.album-card:nth-child(1) { z-index: 3; transform: rotate(-3deg); }
+.album-card:nth-child(2) { z-index: 2; transform: translate(12px, -6px) rotate(7deg); }
+.album-card:nth-child(3) { z-index: 1; transform: translate(-12px, -10px) rotate(-9deg); }
+.album-card .portrait-dedication { font-size: 17px; }
+.album-card figcaption { padding: 16px 4px 18px; }
+.album-card .portrait-date { margin-top: 8px; }
+.album-edit-hint, .album-status { max-width: 520px; margin: 0 auto 16px; color: var(--muted); font-size: 12px; line-height: 1.7; }
+.album-status:empty { display: none; }
+.photo-actions { display: flex; justify-content: center; flex-wrap: wrap; gap: 0 4px; padding: 0 0 8px; }
+.photo-actions .text-button { min-height: 44px; padding: 10px 6px; }
+.photo-actions button:disabled { opacity: .5; cursor: default; }
+.album-card[aria-busy="true"] .portrait-photo { opacity: .65; }
+.memory-album.is-spread .album-photos { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+.memory-album.is-spread .album-card { grid-area: auto; transform: rotate(var(--photo-angle)); animation: photo-unfold .65s cubic-bezier(.2,.8,.2,1) both; }
+.memory-album.is-spread .album-card:nth-child(1) { --photo-angle: -4deg; }
+.memory-album.is-spread .album-card:nth-child(2) { --photo-angle: 2deg; animation-delay: .13s; }
+.memory-album.is-spread .album-card:nth-child(3) { --photo-angle: -2deg; animation-delay: .26s; }
+.album-footnote { margin: 22px 0 0; color: var(--muted); font: italic 15px/1.7 var(--font-serif); }
+@keyframes photo-unfold {
+  from { opacity: 0; transform: translateY(22px) rotate(0); }
+  to { opacity: 1; transform: translateY(0) rotate(var(--photo-angle)); }
+}
+@media (min-width: 1100px) {
+  body.card-open .gift-layout { grid-template-columns: minmax(0, 1fr) minmax(400px, 470px); align-items: center; }
+  body.card-open .bouquet-composition { width: min(100%, var(--bouquet-size)); }
+  body.card-open .envelope-button { right: 0; width: 126px; }
+  body.card-open .envelope { width: 88px; height: 60px; }
+  body.card-open .envelope-seal { top: 22px; }
+  body.card-open .envelope-caption { font-size: 10px; }
+  body.card-open .envelope-action { font-size: 12px; }
+  body.card-open .card-dialog { width: 100%; }
+}
+@media (min-width: 601px) and (max-width: 1099px) {
+  body.card-open .bouquet-composition { width: min(100%, var(--bouquet-size)); }
+}
+@media (max-width: 600px) {
+  .occasion { font-size: 12px; margin-bottom: 8px; }
+  .greeting { margin-bottom: 6px; }
+  .greeting-caption { font-size: 12px; margin-top: 8px; }
+  .gift-visuals { margin-top: 2px; }
+  .bouquet-composition { margin-top: 0; margin-bottom: 4px; width: min(100%, var(--bouquet-size)); }
+  .envelope-button { right: 6px; top: 68%; width: 130px; }
+  .envelope { width: 88px; height: 60px; margin-bottom: 9px; }
+  .envelope-seal { top: 22px; }
+  .envelope-caption { font-size: 10px; }
+  .envelope-action { font-size: 12px; }
+  .rose-wish { font-size: 16px; padding: 0 10px; }
+  .letter-paper { padding: 18px 24px 10px; }
+  .letter-fold { margin-left: -24px; margin-right: -24px; }
+  #cardTitle { font-size: 29px; }
+  .memory-album.is-spread .album-photos { grid-template-columns: minmax(0, 1fr); gap: 32px; }
+}
+@keyframes bouquet-entrance { from { opacity: 0; transform: translateY(18px) scale(.92); } to { opacity: 1; transform: translateY(0) scale(1); } }
+@keyframes envelope-arrival { from { opacity: 0; transform: translateY(14px) rotate(-12deg); } to { opacity: 1; transform: translateY(0) rotate(-7deg); } }
+@keyframes letter-open { from { opacity: 0; transform: translateY(16px); } to { opacity: 1; transform: translateY(0); } }
+@keyframes wish-arrival { from { opacity: 0; transform: translateY(5px); } to { opacity: 1; transform: translateY(0); } }
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation: none !important; transition: none !important; scroll-behavior: auto !important; }
+}

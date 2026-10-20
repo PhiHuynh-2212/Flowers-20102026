@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#fff8fa">
+  <title>Một bó hoa dành tặng bạn · 20/10</title>
+  <link rel="preload" href="./assets/fonts/noto-serif-regular.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="./assets/fonts/noto-serif-italic.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="./assets/fonts/noto-sans-regular.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="stylesheet" href="./style.css">
+  <script src="./share.js"></script>
+  <script src="./script.js" defer></script>
+  <script src="./card.js" defer></script>
+  <script src="./album.js" defer></script>
+</head>
+<body>
+  <main>
+    <a class="garden-link" href="./garden.html">Ngắm vườn hoa <span aria-hidden="true">❀</span></a>
+    <canvas id="ambientPetalsCanvas" aria-hidden="true"></canvas>
+    <header class="greeting">
+      <p class="occasion">Ngày Phụ nữ Việt Nam <span>20/10</span></p>
+      <h1>Một bó hoa nhỏ,<br>gửi ngàn yêu thương.</h1>
+      <p class="greeting-caption">Mong hôm nay của bạn thật dịu dàng.</p>
+    </header>
+
+    <div class="gift-layout">
+      <section class="scene-column" aria-label="Hoa và những lời chúc 20/10">
+
+
+        <div class="gift-visuals">
+          <div class="bouquet-composition">
+            <div id="bouquetStageWrapper" role="button" tabindex="0"
+              aria-label="Bó hoa hồng. Nhấn Enter để nhận lời chúc; dùng phím mũi tên để chọn bông hoa."
+              aria-describedby="bouquetHint">
+              <canvas id="bouquetCanvas" aria-hidden="true"></canvas>
+            </div>
+            <button class="envelope-button" id="openCard" type="button" aria-haspopup="dialog" aria-controls="greetingCard" aria-expanded="false" hidden>
+              <span class="envelope" aria-hidden="true"><span class="envelope-letter">Gửi bạn</span><span class="envelope-seal">♡</span></span>
+              <span class="envelope-caption">Có một tấm thiệp cho bạn</span>
+              <span class="envelope-action">Mở thiệp</span>
+            </button>
+          </div>
+
+        </div>
+
+        <footer class="scene-footer">
+          <p id="bouquetHint" class="bouquet-hint">Chạm một bông hoa để nhận lời chúc</p>
+          <p id="roseWish" class="rose-wish" role="status" aria-live="polite" aria-atomic="true"></p>
+          <button class="text-button" id="replayBloom" type="button">Cho hoa nở lại <span aria-hidden="true">↻</span></button>
+        </footer>
+      </section>
+
+      <dialog id="greetingCard" class="card-dialog" aria-labelledby="cardTitle">
+        <div class="letter-paper">
+          <button class="close-button" id="closeCard" type="button" aria-label="Đóng thiệp">×</button>
+          <div id="cardReading">
+            <div class="letter-date" aria-label="Ngày 20 tháng 10"><span>20</span><span class="date-stem" aria-hidden="true"></span><span>10</span></div>
+            <p class="letter-recipient">Gửi <span id="cardRecipient">bạn</span>,</p>
+            <h2 id="cardTitle">Chúc bạn một ngày<br>thật nhiều yêu thương.</h2>
+            <div class="letter-flower" aria-hidden="true">❀</div>
+            <p id="cardMessage" class="letter-message"></p>
+            <div class="letter-signoff"><p>Với thật nhiều thương mến,</p><p id="cardSender" class="letter-signature"></p></div>
+            <div class="letter-fold" aria-hidden="true"></div>
+            <div class="letter-actions">
+              <button id="viewAlbum" class="text-button" type="button" aria-controls="memoryAlbum">Xem album kỷ niệm <span aria-hidden="true">♡</span></button>
+              <button id="editCard" class="text-button" type="button">Viết lời chúc riêng <span aria-hidden="true">✎</span></button>
+              <button id="shareLinkBtn" class="text-button" type="button" style="color: var(--rose); font-weight: 600;">Tạo link gửi tặng <span aria-hidden="true">🔗</span></button>
+            </div>
+          </div>
+          <form id="cardEditor" hidden>
+            <p class="editor-intro">Một tấm thiệp mang lời của bạn.</p>
+            <h2 id="editorTitle" class="editor-title">Viết chút yêu thương</h2>
+            <label for="recipientInput">Gửi đến</label>
+            <input id="recipientInput" name="recipient" maxlength="60" required autocomplete="off">
+            <label for="messageInput">Lời chúc 20/10</label>
+            <textarea id="messageInput" name="message" rows="7" maxlength="1500" required></textarea>
+            <label for="senderInput">Người gửi</label>
+            <input id="senderInput" name="sender" maxlength="60" required autocomplete="off">
+            <p class="editor-hint">Sau khi lưu, bạn có thể bấm <strong>"Tạo link gửi tặng"</strong> để lấy link gửi cho người ấy.</p>
+            <div class="editor-actions"><button class="primary-button" type="submit">Lưu lời chúc</button><button class="text-button" id="cancelEdit" type="button">Hủy</button></div>
+          </form>
+          <div id="shareResultModal" class="share-box" hidden style="margin-top: 15px; padding: 14px; background: #fff5f8; border: 1px dashed var(--rose); border-radius: 8px; text-align: center;">
+            <p style="margin: 0 0 8px; font-weight: 600; font-size: 14px; color: var(--ink);">✨ Link tặng quà của bạn đã sẵn sàng:</p>
+            <div style="display: flex; gap: 8px; justify-content: center; align-items: center; max-width: 100%;">
+              <input id="shareUrlInput" readonly style="flex: 1; padding: 8px 10px; font-size: 13px; border: 1px solid var(--line); border-radius: 4px; background: #fff; text-overflow: ellipsis;">
+              <button id="copyShareBtn" class="primary-button" type="button" style="padding: 8px 14px; white-space: nowrap;">Sao chép</button>
+            </div>
+            <p id="shareCopyMsg" style="margin: 6px 0 0; font-size: 12px; color: var(--rose);" hidden>Đã chép link vào bộ nhớ tạm!</p>
+          </div>
+          <p id="cardStatus" class="card-status" role="status" aria-live="polite"></p>
+        </div>
+      </dialog>
+    </div>
+    <section id="memoryAlbum" class="memory-album" aria-labelledby="albumTitle" hidden>
+      <header class="album-heading">
+        <p class="album-note">Một chút kỷ niệm, dành riêng cho bạn</p>
+        <h2 id="albumTitle">Những khoảnh khắc thương yêu</h2>
+        <button id="toggleAlbum" class="text-button" type="button" aria-expanded="false" aria-controls="albumPhotos">Xòe album <span aria-hidden="true">♡</span></button>
+        <button id="editAlbum" class="text-button" type="button" aria-expanded="false" aria-controls="albumPhotos">Thay ảnh <span aria-hidden="true">✎</span></button>
+      </header>
+      <p id="albumEditHint" class="album-edit-hint" hidden>Chọn ảnh từ thiết bị của bạn, tối đa 20 MB mỗi ảnh. Ảnh được lưu trên trình duyệt này, không tự gửi sang thiết bị khác.</p>
+      <p id="albumStatus" class="album-status" role="status" aria-live="polite" aria-atomic="true"></p>
+      <div id="albumPhotos" class="album-photos">
+        <figure class="portrait-card album-card">
+          <div class="portrait-photo"><img src="./assets/portrait-placeholder.webp" alt="Ảnh kỷ niệm thứ nhất của người nhận thiệp" width="768" height="1024" decoding="async"></div>
+          <figcaption><span class="portrait-dedication">Một nụ cười rất thương.</span><span class="portrait-date">Những ngày thật vui</span></figcaption>
+          <div class="photo-actions" hidden>
+            <button class="text-button change-photo" type="button" aria-label="Đổi ảnh thứ nhất">Đổi ảnh</button>
+            <button class="text-button reset-photo" type="button" aria-label="Khôi phục ảnh thứ nhất" disabled>Ảnh ban đầu</button>
+            <input class="photo-input" type="file" accept="image/*" aria-label="Chọn ảnh thứ nhất" hidden>
+          </div>
+        </figure>
+        <figure class="portrait-card album-card">
+          <div class="portrait-photo"><img src="./assets/portrait-placeholder.webp" alt="Ảnh kỷ niệm thứ hai của người nhận thiệp" width="768" height="1024" decoding="async" loading="lazy"></div>
+          <figcaption><span class="portrait-dedication">Bình yên từ điều nhỏ.</span><span class="portrait-date">Một khoảnh khắc dịu dàng</span></figcaption>
+          <div class="photo-actions" hidden>
+            <button class="text-button change-photo" type="button" aria-label="Đổi ảnh thứ hai">Đổi ảnh</button>
+            <button class="text-button reset-photo" type="button" aria-label="Khôi phục ảnh thứ hai" disabled>Ảnh ban đầu</button>
+            <input class="photo-input" type="file" accept="image/*" aria-label="Chọn ảnh thứ hai" hidden>
+          </div>
+        </figure>
+        <figure class="portrait-card album-card">
+          <div class="portrait-photo"><img src="./assets/portrait-placeholder.webp" alt="Ảnh kỷ niệm thứ ba của người nhận thiệp" width="768" height="1024" decoding="async" loading="lazy"></div>
+          <figcaption><span class="portrait-dedication">Mong bạn luôn rạng rỡ.</span><span class="portrait-date">Hôm nay và cả mai sau</span></figcaption>
+          <div class="photo-actions" hidden>
+            <button class="text-button change-photo" type="button" aria-label="Đổi ảnh thứ ba">Đổi ảnh</button>
+            <button class="text-button reset-photo" type="button" aria-label="Khôi phục ảnh thứ ba" disabled>Ảnh ban đầu</button>
+            <input class="photo-input" type="file" accept="image/*" aria-label="Chọn ảnh thứ ba" hidden>
+          </div>
+        </figure>
+      </div>
+      <p class="album-footnote">Có những điều nhỏ, nhớ lại vẫn thấy vui.</p>
+    </section>
+    <noscript><p class="noscript-message">Bật JavaScript để ngắm hoa nở và mở thiệp 20/10 nhé.</p></noscript>
+  </main>
+</body>
+</html>
