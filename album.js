@@ -35,15 +35,31 @@
 
   function setEditing(open) {
     editing = open;
-    if (open && !album.classList.contains('is-spread')) toggleSpread();
-    cards.forEach(card => { card.querySelector('.photo-actions').hidden = !open; });
+    if (open && !album.classList.contains('is-spread')) {
+      album.classList.add('is-spread');
+      if (toggle) {
+        toggle.setAttribute('aria-expanded', 'true');
+        toggle.innerHTML = 'Gấp album <span aria-hidden="true">♡</span>';
+      }
+    }
+    cards.forEach(card => {
+      const actions = card.querySelector('.photo-actions');
+      if (actions) actions.hidden = !open;
+    });
     if (hint) hint.hidden = !open;
     if (edit) {
       edit.setAttribute('aria-expanded', String(open));
-      edit.textContent = open ? 'Xong' : 'Thay ảnh ✎';
+      edit.textContent = open ? 'Xong ✓' : 'Thay ảnh ✎';
+      edit.style.fontWeight = open ? 'bold' : 'normal';
     }
   }
-  if (edit) edit.addEventListener('click', () => setEditing(!editing));
+  if (edit) {
+    edit.addEventListener('click', (e) => {
+      e.preventDefault();
+      e.stopPropagation();
+      setEditing(!editing);
+    });
+  }
 
   async function preparePhoto(file) {
     const url = URL.createObjectURL(file);
