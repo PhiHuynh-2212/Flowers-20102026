@@ -74,7 +74,8 @@
     const key = `flower.album.photo.20-10.v1.${index}`;
     let busy = false;
 
-    change.addEventListener('click', () => {
+    change.addEventListener('click', (e) => {
+      e.stopPropagation();
       input.value = '';
       input.click();
     });
@@ -115,7 +116,8 @@
         card.removeAttribute('aria-busy');
       }
     });
-    reset.addEventListener('click', () => {
+    reset.addEventListener('click', (e) => {
+      e.stopPropagation();
       photo.src = original;
       input.value = '';
       reset.disabled = true;

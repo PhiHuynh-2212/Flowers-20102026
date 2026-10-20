@@ -208,8 +208,14 @@ h1 { margin: 0; font-size: clamp(28px, 3.4vw, 42px); line-height: 1.08; letter-s
 .album-card .portrait-date { margin-top: 8px; }
 .album-edit-hint, .album-status { max-width: 520px; margin: 0 auto 16px; color: var(--muted); font-size: 12px; line-height: 1.7; }
 .album-status:empty { display: none; }
-.photo-actions { display: flex; justify-content: center; flex-wrap: wrap; gap: 0 4px; padding: 0 0 8px; }
-.photo-actions .text-button { min-height: 44px; padding: 10px 6px; }
+.photo-actions {
+  display: flex; justify-content: center; flex-wrap: wrap; gap: 0 4px;
+  padding: 0 0 8px; position: relative; z-index: 10;
+}
+.photo-actions .text-button {
+  min-height: 44px; padding: 10px 8px; font-weight: 600; cursor: pointer;
+  position: relative; z-index: 11;
+}
 .photo-actions button:disabled { opacity: .5; cursor: default; }
 .album-card[aria-busy="true"] .portrait-photo { opacity: .65; }
 .memory-album.is-spread .album-photos { grid-template-columns: repeat(3, minmax(0, 1fr)); }
